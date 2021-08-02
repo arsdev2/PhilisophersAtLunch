@@ -1,20 +1,15 @@
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 public class Waiter {
 
     private final Fork[] forks;
-    private final Lock[] forksLocks;
 
     private final int n;
 
     public Waiter(int n) {
         this.n = n;
         forks = new Fork[n];
-        forksLocks = new Lock[n];
         for(int i = 0;i<n;i++){
             forks[i] = new Fork(i);
-            forksLocks[i] = new ReentrantLock();
         }
     }
 
