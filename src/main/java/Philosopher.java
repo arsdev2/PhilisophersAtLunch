@@ -1,9 +1,9 @@
-import java.nio.ByteBuffer;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Philosopher extends Thread{
 
@@ -11,7 +11,7 @@ public class Philosopher extends Thread{
     private final int numOfPhilosopher;
     private final SecureRandom random;
     private static final int millisToEat = 5000;
-
+    private final Logger logger = Logger.getLogger(Philosopher.class.getName());
 
     public static List<Philosopher> getPhilosophers(Waiter waiter, int n){
         List<Philosopher> philosopherList = new ArrayList<>();
@@ -41,17 +41,17 @@ public class Philosopher extends Thread{
         while(true){
             try {
                 int millisToThink = random.nextInt(4000) + 1000;
-                System.out.println("Philosopher #" + numOfPhilosopher + " is thinking right now for " + millisToThink);
+                logger.log(Level.INFO, "Philosopher #" + numOfPhilosopher + " is thinking right now for " + millisToThink);
                 Thread.sleep(millisToThink);
 
-                System.out.println("Philosopher #" + numOfPhilosopher + " waiting for forks");
+                logger.log(Level.INFO, "Philosopher #" + numOfPhilosopher + " waiting for forks");
                 Fork[] forks = waiter.askForForks(numOfPhilosopher);
-                System.out.println("Philosopher #" + numOfPhilosopher + " started eating with forks "
+                logger.log(Level.INFO, "Philosopher #" + numOfPhilosopher + " started eating with forks "
                             + forks[0].toString() + " and " + forks[1].toString());
-                System.out.println("Philosopher #" + numOfPhilosopher + " is eating right now for " + millisToEat);
+                logger.log(Level.INFO, "Philosopher #" + numOfPhilosopher + " is eating right now for " + millisToEat);
                 Thread.sleep(millisToEat);
                 waiter.giveForksBack(numOfPhilosopher);
-                System.out.println("Philosopher #" + numOfPhilosopher + " finished eating");
+                logger.log(Level.INFO, "Philosopher #" + numOfPhilosopher + " finished eating");
             } catch (Exception e) {
                 e.printStackTrace();
             }
