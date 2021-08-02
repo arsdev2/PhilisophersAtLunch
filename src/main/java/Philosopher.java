@@ -1,3 +1,6 @@
+import java.nio.ByteBuffer;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -6,6 +9,9 @@ public class Philosopher extends Thread{
 
     private final Waiter waiter;
     private final int numOfPhilosopher;
+    private final SecureRandom random;
+    private static final int millisToEat = 5000;
+
 
     public static List<Philosopher> getPhilosophers(Waiter waiter, int n){
         List<Philosopher> philosopherList = new ArrayList<>();
@@ -18,13 +24,16 @@ public class Philosopher extends Thread{
         return philosopherList;
     }
 
-    private final Random random;
-
     private Philosopher(Waiter waiter, int numOfPhilosopher) {
         super("Philosopher #" + numOfPhilosopher);
         this.waiter = waiter;
         this.numOfPhilosopher = numOfPhilosopher;
-        random = new Random(numOfPhilosopher);
+        try {
+            random = SecureRandom.getInstanceStrong();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            throw new RuntimeException("No such algorithm");
+        }
     }
 
     @Override
@@ -39,7 +48,6 @@ public class Philosopher extends Thread{
                 Fork[] forks = waiter.askForForks(numOfPhilosopher);
                 System.out.println("Philosopher #" + numOfPhilosopher + " started eating with forks "
                             + forks[0].toString() + " and " + forks[1].toString());
-                int millisToEat = random.nextInt(8000) + 1000;
                 System.out.println("Philosopher #" + numOfPhilosopher + " is eating right now for " + millisToEat);
                 Thread.sleep(millisToEat);
                 waiter.giveForksBack(numOfPhilosopher);

@@ -20,7 +20,12 @@ public class Waiter {
 
         for (int index : indexes) {
             Fork fork = forks[index];
-            fork.locker.lock();
+            try {
+                fork.locker.lock();
+            } catch (Exception e) {
+                e.printStackTrace();
+                fork.locker.unlock();
+            }
         }
 
         return new Fork[]{forks[indexes[0]], forks[indexes[1]]};
