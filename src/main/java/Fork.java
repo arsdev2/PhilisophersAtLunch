@@ -1,11 +1,13 @@
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class Fork {
 
 
     private final int numOfFork;
 
-    public final Object locker = new Object();
+    public final ReentrantLock locker = new ReentrantLock();
 
     public Boolean isUsingRightNow = false;
 

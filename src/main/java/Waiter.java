@@ -1,4 +1,3 @@
-
 public class Waiter {
 
     private final Fork[] forks;
@@ -13,7 +12,7 @@ public class Waiter {
         }
     }
 
-    public Fork[] askForForks(int numOfPhilosopher) throws InterruptedException {
+    public Fork[] askForForks(int numOfPhilosopher){
         if(numOfPhilosopher < 0 || numOfPhilosopher >= n){
             throw new IllegalArgumentException("N should be positive or forks count is not matching with philosophers count");
         }
@@ -21,13 +20,7 @@ public class Waiter {
 
         for (int index : indexes) {
             Fork fork = forks[index];
-            synchronized (fork.locker) {
-                if (fork.isUsingRightNow) {
-                    fork.locker.wait();
-                }else{
-                    fork.isUsingRightNow = true;
-                }
-            }
+            fork.locker.lock();
         }
 
         return new Fork[]{forks[indexes[0]], forks[indexes[1]]};
@@ -37,14 +30,11 @@ public class Waiter {
         int[] indexes = getForksByPhilosopherNum(numOfPhilosopher);
         for (int index : indexes) {
             Fork fork = forks[index];
-            synchronized (fork.locker) {
-                fork.isUsingRightNow = false;
-                fork.locker.notify();
-            }
+            fork.locker.unlock();
         }
     }
 
-    private synchronized int[] getForksByPhilosopherNum(int numOfPhilosopher) {
+    private int[] getForksByPhilosopherNum(int numOfPhilosopher) {
         int leftIndex = numOfPhilosopher;
         int rightIndex = numOfPhilosopher + 1 >= n ? 0 : leftIndex + 1;
         return new int[]{leftIndex, rightIndex};
