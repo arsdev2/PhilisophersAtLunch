@@ -22,6 +22,9 @@ public class Waiter {
             Fork fork = forks[index];
             try {
                 fork.locker.lock();
+                if(!fork.locker.isLocked()){
+                    fork.locker.lock();
+                }
             } catch (Exception e) {
                 e.printStackTrace();
                 fork.locker.unlock();

@@ -7,7 +7,7 @@ public class Fork {
 
     private final int numOfFork;
 
-    public final ReentrantLock locker = new ReentrantLock();
+    public final ReentrantLock locker = new ReentrantLock(true);
 
     public Boolean isUsingRightNow = false;
 
