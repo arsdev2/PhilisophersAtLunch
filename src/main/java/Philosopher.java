@@ -41,17 +41,17 @@ public class Philosopher extends Thread{
         while(true){
             try {
                 int millisToThink = random.nextInt(4000) + 1000;
-                logger.log(Level.INFO, "Philosopher #" + numOfPhilosopher + " is thinking right now for " + millisToThink);
+                logger.info("Philosopher #" + numOfPhilosopher + " is thinking right now for " + millisToThink);
                 Thread.sleep(millisToThink);
 
-                logger.log(Level.INFO, "Philosopher #" + numOfPhilosopher + " waiting for forks");
+                logger.info("Philosopher #" + numOfPhilosopher + " waiting for forks");
                 Fork[] forks = waiter.askForForks(numOfPhilosopher);
-                logger.log(Level.INFO, "Philosopher #" + numOfPhilosopher + " started eating with forks "
+                logger.info("Philosopher #" + numOfPhilosopher + " started eating with forks "
                             + forks[0].toString() + " and " + forks[1].toString());
-                logger.log(Level.INFO, "Philosopher #" + numOfPhilosopher + " is eating right now for " + millisToEat);
+                logger.info("Philosopher #" + numOfPhilosopher + " is eating right now for " + millisToEat);
                 Thread.sleep(millisToEat);
                 waiter.giveForksBack(numOfPhilosopher);
-                logger.log(Level.INFO, "Philosopher #" + numOfPhilosopher + " finished eating");
+                logger.info("Philosopher #" + numOfPhilosopher + " finished eating");
             } catch (Exception e) {
                 e.printStackTrace();
             }

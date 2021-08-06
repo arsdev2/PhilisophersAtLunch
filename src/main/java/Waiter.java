@@ -1,8 +1,12 @@
+import java.util.logging.Logger;
+
 public class Waiter {
 
     private final Fork[] forks;
 
     private final int n;
+
+    private final Logger logger = Logger.getLogger(Waiter.class.getName());
 
     public Waiter(int n) {
         this.n = n;
@@ -21,13 +25,11 @@ public class Waiter {
         for (int index : indexes) {
             Fork fork = forks[index];
             try {
-                fork.locker.lock();
-                if(!fork.locker.isLocked()){
+                while(!fork.locker.isLocked()){
                     fork.locker.lock();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                fork.locker.unlock();
             }
         }
 
@@ -38,7 +40,18 @@ public class Waiter {
         int[] indexes = getForksByPhilosopherNum(numOfPhilosopher);
         for (int index : indexes) {
             Fork fork = forks[index];
-            fork.locker.unlock();
+            try {
+                boolean isLocked = fork.locker.isHeldByCurrentThread();
+               /* logger.info(String.format("Num of ph - %d Num of fork %d Monitor locked %s",
+                        numOfPhilosopher,
+                        index,
+                        String.valueOf(isLocked)));*/
+                if(isLocked){
+                    fork.locker.unlock();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
