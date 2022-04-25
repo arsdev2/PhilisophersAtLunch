@@ -1,9 +1,10 @@
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class Philosopher extends Thread{
 
@@ -11,7 +12,7 @@ public class Philosopher extends Thread{
     private final int numOfPhilosopher;
     private final SecureRandom random;
     private static final int millisToEat = 5000;
-    private final Logger logger = Logger.getLogger(Philosopher.class.getName());
+    private final Logger logger = LoggerFactory.getLogger(Philosopher.class.getName());
 
     public static List<Philosopher> getPhilosophers(Waiter waiter, int n){
         List<Philosopher> philosopherList = new ArrayList<>();

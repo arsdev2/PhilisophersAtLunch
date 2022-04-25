@@ -6,8 +6,6 @@ public class Fork {
 
     public final ReentrantLock locker = new ReentrantLock(true);
 
-    public Boolean isUsingRightNow = false;
-
     public Fork(int numOfFork){
         this.numOfFork = numOfFork;
     }

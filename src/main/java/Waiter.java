@@ -1,4 +1,5 @@
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Waiter {
 
@@ -6,7 +7,7 @@ public class Waiter {
 
     private final int n;
 
-    private final Logger logger = Logger.getLogger(Waiter.class.getName());
+    private final Logger logger = LoggerFactory.getLogger(Waiter.class);
 
     public Waiter(int n) {
         this.n = n;
@@ -25,9 +26,9 @@ public class Waiter {
         for (int index : indexes) {
             Fork fork = forks[index];
             try {
-                while(!fork.locker.isLocked()){
+//                while(!fork.locker.isLocked()){
                     fork.locker.lock();
-                }
+//                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -41,11 +42,12 @@ public class Waiter {
         for (int index : indexes) {
             Fork fork = forks[index];
             try {
-                boolean isLocked = fork.locker.isHeldByCurrentThread();
-               /* logger.info(String.format("Num of ph - %d Num of fork %d Monitor locked %s",
+                boolean isLocked = fork.locker.isLocked();
+                logger.info(String.format("Num of ph - %d Num of fork %d Monitor locked %s",
                         numOfPhilosopher,
                         index,
-                        String.valueOf(isLocked)));*/
+                        String.valueOf(isLocked)));
+
                 if(isLocked){
                     fork.locker.unlock();
                 }
